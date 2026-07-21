@@ -1,0 +1,19 @@
+select Usuario.idUsuario ,
+PreguntaSeguridad.Pregunta ,
+MetodoEntrega.Nombre as metodoEntrega ,
+Usuario.Nombre ,
+Usuario.Apellido ,
+Usuario.Telefono ,
+Usuario.Correo ,
+Usuario.Contraseña ,
+Usuario.FotoPerfil ,
+Usuario.RespuestaSeguridad ,
+Usuario.SuscripcionListaCorreo
+,Rol.NombreRol from Usuario 
+
+join PreguntaSeguridad
+on Usuario.IdPregunta = PreguntaSeguridad.IdPregunta join 
+MetodoEntrega
+on Usuario.IdMetodo = MetodoEntrega.IdMetodo join 
+Rol
+on Usuario.IdRol = Rol.IdRol;
