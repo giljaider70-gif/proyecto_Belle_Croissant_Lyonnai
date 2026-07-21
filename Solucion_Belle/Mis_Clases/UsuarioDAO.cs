@@ -34,11 +34,13 @@ namespace Mis_Clases
                                 Telefono = rider["Telefono"].ToString(),
                                 Correo = rider["Correo"].ToString(),
                                 contrasena = rider["Contraseña"].ToString(),
-                                fotoPerfil = rider["FotoPerfil"].ToString(),
+                                FotoPerfil = rider["FotoPerfil"] != DBNull.Value
+                                    ? (byte[])rider["FotoPerfil"]
+                                    : null,
                                 respuestaSeguridad = rider["RespuestaSeguridad"].ToString(),
                                 SuscripcionListaCorreo = Convert.ToBoolean(rider["SuscripcionListaCorreo"]),
                                 rol = rider["NombreRol"].ToString(),
-                                
+
                             };
                             lista_Usuario.Add(usuario);
                         }
@@ -100,7 +102,9 @@ namespace Mis_Clases
                                 Telefono = rider["Telefono"].ToString(),
                                 Correo = rider["Correo"].ToString(),
                                 contrasena = rider["Contraseña"].ToString(),
-                                fotoPerfil = rider["FotoPerfil"].ToString(),
+                                FotoPerfil = rider["FotoPerfil"] != DBNull.Value
+                                    ? (byte[])rider["FotoPerfil"]
+                                    : null,
                                 respuestaSeguridad = rider["RespuestaSeguridad"].ToString(),
                                 SuscripcionListaCorreo = Convert.ToBoolean(rider["SuscripcionListaCorreo"]),
                                 rol = rider["NombreRol"].ToString()
@@ -286,6 +290,31 @@ namespace Mis_Clases
             }
 
             return idUsuario;
+        }
+
+        public bool ActualizarFotoPerfil(string correo, byte[] foto)
+        {
+            using (SqlConnection conexion = Obtener_Conexion())
+            {
+                conexion.Open();
+
+                string sql = "UPDATE Usuario SET FotoPerfil = @Foto WHERE Correo = @Correo";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conexion))
+                {
+
+                    cmd.Parameters.AddWithValue("@Foto", foto);
+                    cmd.Parameters.AddWithValue("@Correo", correo);
+
+                    int filas = cmd.ExecuteNonQuery();
+
+                    conexion.Close();
+
+                    return filas > 0;
+                }
+            }
+
+            
         }
     }
 

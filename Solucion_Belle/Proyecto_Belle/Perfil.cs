@@ -6,7 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
+using System.IO;
 namespace Proyecto_Belle
 {
     public partial class Perfil : Form
@@ -58,6 +58,14 @@ namespace Proyecto_Belle
                 textapellido.Text = usuario.apellido;
                 textemail.Text = usuario.Correo;
                 textnumero.Text = usuario.Telefono;
+
+                if (usuario.FotoPerfil != null)
+                {
+                    using (MemoryStream ms = new MemoryStream(usuario.FotoPerfil))
+                    {
+                        pictureperfil.Image = Image.FromStream(ms);
+                    }
+                }
             }
 
             // Bloqueamos los campos para que arranquen en modo lectura
@@ -65,8 +73,9 @@ namespace Proyecto_Belle
             textapellido.ReadOnly = true;
             textemail.ReadOnly = true;
             textnumero.ReadOnly = true;
+
         }
-            
+
 
         private void btneditar_Click_1(object sender, EventArgs e)
         {
@@ -115,6 +124,34 @@ namespace Proyecto_Belle
             }
         }
 
-    
+        private void pictureperfil_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnactualizarfoto_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Archivos de imagen|*.jpg;*.jpeg;*.png;*.bmp";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                
+                pictureperfil.Image = Image.FromFile(ofd.FileName);
+
+               
+                byte[] foto = File.ReadAllBytes(ofd.FileName);
+                bool exito = usuarioDAO.ActualizarFotoPerfil(correoUsuarioActual, foto);
+
+                if (exito)
+                {
+                    MessageBox.Show("Foto de perfil actualizada correctamente.");
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo actualizar la foto.");
+                }
+            }
+        }
     }
 }
