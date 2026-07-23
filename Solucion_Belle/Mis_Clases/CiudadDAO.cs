@@ -14,7 +14,7 @@ namespace Mis_Clases
             using (SqlConnection conexion = Obtener_Conexion())
             {
                 conexion.Open();
-                string consulta = "select * from Ciuadad;";
+                string consulta = "select * from Ciudad;";
 
                 using (SqlCommand comado = new SqlCommand(consulta, conexion))
                 {

@@ -136,10 +136,10 @@ namespace Proyecto_Belle
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                
+
                 pictureperfil.Image = Image.FromFile(ofd.FileName);
 
-               
+
                 byte[] foto = File.ReadAllBytes(ofd.FileName);
                 bool exito = usuarioDAO.ActualizarFotoPerfil(correoUsuarioActual, foto);
 
@@ -152,6 +152,13 @@ namespace Proyecto_Belle
                     MessageBox.Show("No se pudo actualizar la foto.");
                 }
             }
+        }
+
+        private void buttondirrecion_Click(object sender, EventArgs e)
+        {
+            Agregardireccion agregardireccion = new Agregardireccion();
+            agregardireccion.Show();
+            this.Hide();
         }
     }
 }
